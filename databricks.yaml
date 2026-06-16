@@ -1,17 +1,15 @@
-resources:
-  jobs:
-    test_oauth:
-      name: test_oauth
-      tasks:
-        - task_key: test_task
-          notebook_task:
-            notebook_path: /Workspace/Users/arbaaz.suleman@tekizma.com/List Scope
-            source: WORKSPACE
-          environment_key: Default
-      queue:
-        enabled: true
-      environments:
-        - environment_key: Default
-          spec:
-            environment_version: "5"
-      performance_target: PERFORMANCE_OPTIMIZED
+bundle:
+  name: dmi_ls_data
+
+include:
+  - resources/workflows/*.yaml
+
+targets:
+  uat_cp:
+    workspace:
+      host: https://adb-7701630258100873.13.azuredatabricks.net
+    run_as:
+      service_principal_name: 1e45f501-42a2-48c6-80c4-dffd6d867beb
+    permissions:
+      - user_name: "arbaaz.suleman@tekizma.com"
+        level: CAN_MANAGE
