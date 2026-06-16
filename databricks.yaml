@@ -2,7 +2,7 @@ bundle:
   name: dmi_ls_data
 
 include:
-  - resources/workflows/*.yaml
+  - resources/*.yaml
 
 targets:
   uat_cp:
