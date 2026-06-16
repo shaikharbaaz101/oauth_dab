@@ -1,0 +1,52 @@
+name: dmi-ls-data-deploy
+permissions:
+  contents: read
+on:
+  workflow_dispatch:
+    inputs:
+      databricks-workspace:
+        type: choice
+        description: Target DMI Databricks workspace
+        required: true
+        options:
+          - qa
+          - qa_cp
+          - uat
+          - uat_cp
+          - prod
+
+jobs:
+  ls-data-build-and-test:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.databricks-workspace }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v1
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Deploy workflows
+        run: |
+          env=${{ github.event.inputs.databricks-workspace }}
+          if [ "$env" == "qa" ]; then
+              echo "TO BE SETUP"
+          elif [ "$env" == "qa_cp" ]; then
+              echo "TO BE SETUP"
+          elif [ "$env" == "uat" ]; then
+              echo "TO BE SETUP"
+          elif [ "$env" == "uat_cp" ]; then
+              export DATABRICKS_CLIENT_ID=${{ secrets.CLIENT_ID }}
+              export DATABRICKS_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
+              databricks bundle validate -t uat_cp
+              databricks bundle deploy -t uat_cp
+          elif [ "$env" == "prod" ]; then
+              echo "TO BE SETUP"
+          else
+              echo "TO BE SETUP"
+          fi
